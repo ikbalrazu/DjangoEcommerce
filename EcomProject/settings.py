@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'mptt',
     'crispy_forms',
     'OrderApp',
+    'UserApp',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

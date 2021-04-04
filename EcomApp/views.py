@@ -3,9 +3,22 @@ from django.http import HttpResponse, HttpResponseRedirect
 from EcomApp.models import Setting, ContactMessage, ContactForm
 from Product.models import Category, Product, Images
 from django.contrib import messages
+from OrderApp.models import ShopCart
 
 # Create your views here.
 def Home(request):
+    #for cart view in header start
+    current_user = request.user
+    cart_product = ShopCart.objects.filter(user_id=current_user.id)
+    total_amount = 0
+    for p in cart_product:
+        total_amount += p.product.new_price*p.quantity
+    #for cart view in header end
+    #for cart view in header count
+    total_count = 0
+    for p in cart_product:
+        total_count += p.quantity
+
     category = Category.objects.all()
     setting = Setting.objects.get(id=1)
     sliding_image = Product.objects.all().order_by('id')[:3]
@@ -13,7 +26,10 @@ def Home(request):
     context = {'setting':setting,
                'sliding_image':sliding_image,
                'latest_products':latest_products,
-               'category':category}
+               'category':category,
+               'cart_product':cart_product,
+               'total_amount':total_amount,
+               'total_count':total_count}
     print(context)
     return render(request,'home.html',context)
 

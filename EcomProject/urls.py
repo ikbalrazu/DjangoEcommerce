@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 ----------------------------------------------------------------------------
 
-admin username: iqbal
+admin username: iqbalraju
 and password: 12345
 
 
@@ -28,6 +28,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('EcomApp.urls')),
     path('orderproduct/',include('OrderApp.urls')),
+    path('User-panel/',include('UserApp.urls')),
+
 ]
 
 if settings.DEBUG:
