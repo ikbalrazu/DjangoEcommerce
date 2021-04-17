@@ -12,7 +12,8 @@ class ShopCart(models.Model):
 
     def price(self):
         return self.product.new_price
-
+        
+    @property
     def amount(self):
         return self.quantity*self.product.new_price
 
@@ -58,7 +59,7 @@ class Order(models.Model):
         return mark_safe('<img src="{}" heights="50" width="40" />'.format(self.transaction_image.url))
     image_tag.short_description = 'Image'
 
-class OderForm(ModelForm):
+class OrderForm(ModelForm):
     class Meta:
         model = Order
         fields = ['first_name', 'last_name',

@@ -1,0 +1,27 @@
+{%extends 'index.html' %}
+{%load static%}
+{%block title%}
+Product Details
+{%endblock title%}
+
+{%block keyword%}
+{%endblock keyword%}
+
+{%block header%}
+{%include 'header.html'%}
+{%endblock header%}
+{%block another_content%}
+
+
+<div>
+    <h1>{{user.username}}</h1>
+    <p>Your order is succssfully completed</p>
+    <h2> {{user.first_name}} {{user.last_name}} </h2>
+    <h3> Your order code: {{ordercode}} </h3>
+</div>
+
+
+{%endblock another_content%}
+{%block footer%}
+{%include 'footer.html'%}
+{%endblock footer%}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from Product.models import Category, Product, Images
+from Product.models import Category, Product, Images, CommentModel
 from mptt.admin import DraggableMPTTAdmin
 # Register your models here.
 class CategoryAdmin(DraggableMPTTAdmin):
@@ -57,4 +57,12 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Product,ProductAdmin)
+
+@admin.register(CommentModel)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['user','product','subject','comment','rate','status','created_at','updated_at']
+    list_filter = ['status','created_at']
+    list_per_page = 10 
+
+
 

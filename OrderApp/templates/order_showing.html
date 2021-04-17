@@ -1,0 +1,47 @@
+{%extends 'index.html' %}
+{%load static%}
+{%block title%}
+Product Details
+{%endblock title%}
+
+{%block keyword%}
+{%endblock keyword%}
+
+{%block header%}
+{%include 'header.html'%}
+{%endblock header%}
+{%block another_content%}
+
+<div class="table-content table-responsive">
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="li-product-remove">Username</th>
+                <th class="li-product-thumbnail">Order Price</th>
+                <th class="cart-product-name">Status</th>
+                <th class="li-product-price">Admin Note</th>
+                <th class="li-product-quantity">Action</th>
+            </tr>
+        </thead>
+        {%for p in order_list%}
+        <tbody>
+            
+            <tr>
+                <td class="li-product-name"><a href="#">{{p.user.username}}</a></td>
+                <td class="li-product-price"><span class="amount">{{p.total}}</span></td>
+                <td class="product-subtotal"><span class="amount">{{p.status}}</span></td>
+                <td class="product-subtotal"><span class="amount">{{p.adminnote}}</span></td>
+                <td class="product-subtotal"><span class="amount">action button</span></td>
+            </tr>
+            
+        </tbody>
+        {%endfor%}
+    </table>
+</div>
+
+
+{%endblock another_content%}
+{%block footer%}
+{%include 'footer.html'%}
+{%endblock footer%}

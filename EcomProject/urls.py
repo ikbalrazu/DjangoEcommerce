@@ -17,6 +17,9 @@ Including another URLconf
 admin username: iqbalraju
 and password: 12345
 
+zahid123
+alo12345
+
 
 """
 from django.contrib import admin
@@ -28,6 +31,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('EcomApp.urls')),
     path('orderproduct/',include('OrderApp.urls')),
+    path('product/',include('Product.urls')),
     path('User-panel/',include('UserApp.urls')),
 
 ]

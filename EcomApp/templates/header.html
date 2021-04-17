@@ -27,7 +27,7 @@
                                         {% if user.id is not None %}
                                         <li><a href="{%url 'userprofile'%}">Hi {{request.user.username}}</a></li>
                                         <li><a href="{%url 'user_logout'%}">Logout</a></li>
-                                        <li><a href="{%static ''%}checkout.html">Checkout</a></li>
+                                        <li><a href="{%url 'order_cart'%}">Checkout</a></li>
 
                                         {% else %}
                                         
@@ -83,11 +83,30 @@
                     </div>
                 </div>
                 <!-- Header Logo Area End Here -->
+                <script>
+
+                    $(function() {
+                      $("#query").autocomplete({
+                        source: "/search_auto/",
+                        select: function (event, ui) { //item selected
+                          AutoCompleteSelectHandler(event, ui)
+                        },
+                        minLength: 2,
+                      });
+                    });
+                  
+                    function AutoCompleteSelectHandler(event, ui)
+                    {
+                      var selectedObj = ui.item;
+                    }
+                  
+                  </script>
                 <!-- Begin Header Middle Right Area -->
                 <div class="col-lg-9 pl-0 ml-sm-15 ml-xs-15">
                     <!-- Begin Header Middle Searchbox Area -->
-                    <form action="#" class="hm-searchbox">
-                        <select class="nice-select select-search-category">
+                    <form action="{%url 'searchview'%}" method="POST" class="hm-searchbox">
+                        {%csrf_token%}
+                        <select name="cat_id" class="nice-select select-search-category">
                             <option value="0">All</option>   
                             {% load mptt_tags %}
                             {% recursetree category %}
@@ -97,7 +116,7 @@
                             {% endif %}
                             {% endrecursetree %}
                         </select>
-                        <input type="text" placeholder="Enter your search key ...">
+                        <input type="text" id="query" name="query" placeholder="Enter your search key ...">
                         <button class="li-btn" type="submit"><i class="fa fa-search"></i></button>
                     </form>
                     <!-- Header Middle Searchbox Area End Here -->
@@ -145,7 +164,7 @@
                                         <a href="{%url 'cart_details' %}" class="li-button li-button-fullwidth li-button-dark">
                                             <span>View Full Cart</span>
                                         </a>
-                                        <a href="{%static ''%}checkout.html" class="li-button li-button-fullwidth">
+                                        <a href="{%url 'order_cart'%}" class="li-button li-button-fullwidth">
                                             <span>Checkout</span>
                                         </a>
                                     </div>

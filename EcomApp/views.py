@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from EcomApp.models import Setting, ContactMessage, ContactForm
-from Product.models import Category, Product, Images
+from Product.models import Category, Product, Images, CommentModel
 from django.contrib import messages
 from OrderApp.models import ShopCart
+from .forms import SearchForm
+import json
 
 # Create your views here.
 def Home(request):
@@ -63,18 +65,21 @@ def Contact(request):
 
 
 def Single_Product(request,id):
-    
+
     setting = Setting.objects.get(id=1)
     single_product = Product.objects.get(id=id)
     images = Images.objects.filter(product_id=id)
     product = Product.objects.all().order_by('id')[:4]
     category = Category.objects.all()
+    comment = CommentModel.objects.filter(product_id=id, status='True')
 
     context = {'single_product':single_product,
                'setting':setting,
                'images':images,
                'product':product,
-               'category':category}
+               'category':category,
+               'comment':comment,
+               }
 
     return render(request,'product_single.html',context) 
 
@@ -90,3 +95,38 @@ def category_product(request,id,slug):
                'sliding_image':sliding_image}
 
     return render(request,'category_product.html',context)
+
+def SearchView(request):
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            cat_id = form.cleaned_data['cat_id']
+            if cat_id == 0:
+                product = Product.objects.filter(title__icontains=query)#SELECT * FROM product WHERE title LIKE '%query%'
+            else:
+                product = Product.objects.filter(title__icontains=query, category_id=cat_id)
+            category = Category.objects.all()
+            context = {
+                'category':category,
+                'query':query,
+                'product_cat':product
+            }
+            return render(request,'category_product.html',context)
+    return HttpResponseRedirect('category_product')
+
+def search_auto(request):
+  if request.is_ajax():
+    q = request.GET.get('term', '')
+    product = Product.objects.filter(title__icontains=q)
+    results = []
+    for pl in product:
+      product_json = {}
+      product_json = pl.title
+      results.append(product_json)
+    data = json.dumps(results)
+  else:
+    data = 'fail'
+  mimetype = 'application/json'
+  return HttpResponse(data, mimetype)
+
