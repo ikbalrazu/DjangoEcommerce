@@ -65,6 +65,18 @@ def Contact(request):
 
 
 def Single_Product(request,id):
+    
+    current_user = request.user
+    cart_product = ShopCart.objects.filter(user_id=current_user.id)
+    
+    total_amount = 0
+    for p in cart_product:
+        total_amount += p.product.new_price*p.quantity
+
+
+    total_count = 0
+    for p in cart_product:
+        total_count += p.quantity
 
     setting = Setting.objects.get(id=1)
     single_product = Product.objects.get(id=id)
@@ -79,6 +91,9 @@ def Single_Product(request,id):
                'product':product,
                'category':category,
                'comment':comment,
+               'cart_product':cart_product,
+               'total_amount':total_amount,
+               'total_count':total_count,
                }
 
     return render(request,'product_single.html',context) 
@@ -103,7 +118,8 @@ def SearchView(request):
             query = form.cleaned_data['query']
             cat_id = form.cleaned_data['cat_id']
             if cat_id == 0:
-                product = Product.objects.filter(title__icontains=query)#SELECT * FROM product WHERE title LIKE '%query%'
+                product = Product.objects.filter(title__icontains=query)
+                #SELECT * FROM product WHERE title LIKE '%query%'
             else:
                 product = Product.objects.filter(title__icontains=query, category_id=cat_id)
             category = Category.objects.all()

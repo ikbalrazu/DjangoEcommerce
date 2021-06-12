@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.base import Model
 from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel, TreeForeignKey
 from django.urls import reverse
@@ -64,7 +65,7 @@ class Product(models.Model):
         return reverse('product_element', kwargs={'slug':self.slug})
 
     def average_review(self):
-        reviews = CommentModel.objects.filter(product=self,status=True).aggregate(average=Avg('rate'))
+        reviews = CommentModel.objects.filter(product=self,status='True').aggregate(average=Avg('rate'))
         avg = 0
         if reviews['average'] is not None:
             avg = float(reviews['average'])
@@ -73,12 +74,16 @@ class Product(models.Model):
             return avg
 
     def total_review(self):
-        review = CommentModel.objects.filter(product=self, status=True).aggregate(count=Count('id'))
+        review = CommentModel.objects.filter(product=self, status='True').aggregate(count=Count('id'))
         cnt = 0
         if review['count'] is not None:
             cnt = int(review['count'])
             return cnt
 
+#class Variants(models.Model):
+ #   title = models.CharField(max_length=100, blank=True,null=True)
+  #  product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    
 
 class Images(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

@@ -11,7 +11,7 @@ class Setting(models.Model):
     keyword = models.CharField(max_length=200)
     description = models.TextField()
     address = models.CharField(max_length=200)
-    phone = models.IntegerField()
+    phone = models.TextField()
     fax = models.CharField(blank=True, max_length=50)
     email = models.EmailField(blank=True, null=True, max_length=50)
     smptserver = models.CharField(max_length=100)
