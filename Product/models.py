@@ -1,3 +1,4 @@
+from os import name
 from django.db import models
 from django.db.models.base import Model
 from django.utils.safestring import mark_safe
@@ -112,5 +113,23 @@ class CommentModel(models.Model):
     def __str__(self):
         return self.subject
 
-    
+class Color(models.Model):
+    name = models.CharField(max_length=200, blank=True)
+    code = models.CharField(max_length=50, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    def colortag(self):
+        if self.code is not None:
+            return mark_safe('<p style="background-color:{}">Color</p>'.format(self.code))
+        else:
+            return ""
+
+'''
+class Variants(models.Model):
+    title = models.CharField(max_length=200, blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    color = models.
+'''
 
